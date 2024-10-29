@@ -2,7 +2,10 @@ const express = require('express')
 const app = express()
 const dotenv = require('dotenv').config()
 const WorkoutsRoutes = require('./routes/workoutsRoutes')
-const mongoose = require('mongoose')
+const connection = require('./db')
+
+connection();
+
 app.use(express.json())
 
 app.use((req,res,next) => {
@@ -10,15 +13,13 @@ app.use((req,res,next) => {
     next()
 })
 
+app.get('/healthcheck',(req,res) => {
+	res.status(200).send('Healthy!') } ) 
+
+app.get('/ready',(req,res) => {
+        res.status(200).send('Ready!') } ) 
+
 app.use('/hello',WorkoutsRoutes)
 
-mongoose.connect(process.env.MONGO_CONN_STR)
-.then(() => {
-	const port = process.env.PORT || 4000;
-    app.listen(port, () => {
-        console.log(`Connected and Listening to requests made on ${port}...`)
-       })
-})
-.catch((error) => {
-    console.log({error:error.message})
-})
+const port = process.env.PORT || 4000;
+app.listen(port, () => console.log(`Connected and Listening to requests made on ${port}...`));

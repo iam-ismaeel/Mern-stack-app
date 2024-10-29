@@ -6,7 +6,7 @@ const Home = () => {
 const[workouts,setWorkouts] = useState('')
 useEffect(()=> {
     const fetchWorkouts = async () => {
-     const response = await fetch('/hello')
+     const response = await fetch(process.env.REACT_APP_BACKEND_URL)
      const json = response.json()
 
 
